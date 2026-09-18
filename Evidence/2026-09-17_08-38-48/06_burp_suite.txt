@@ -1,0 +1,20 @@
+BURP SUITE ASSESSMENT
+=====================
+
+Status:
+COMPLETED
+
+Burp Suite was used for:
+
+- HTTP request interception
+- HTTP response inspection
+- Endpoint discovery
+- Parameter identification
+- Authentication testing
+- Session testing
+- Authorization testing
+- XSS testing
+- CSRF observation
+- Security header inspection
+
+Manual request/response evidence was reviewed during testing.

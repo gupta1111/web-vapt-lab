@@ -1,0 +1,9 @@
+SECURITY HEADER ASSESSMENT
+==========================
+
+[NOT OBSERVED] Content-Security-Policy
+[NOT OBSERVED] X-Content-Type-Options
+[NOT OBSERVED] X-Frame-Options
+[NOT OBSERVED] Strict-Transport-Security
+[NOT OBSERVED] Referrer-Policy
+[NOT OBSERVED] Permissions-Policy

@@ -1,0 +1,29 @@
+HTTP/1.1 200 OK
+X-Powered-By: Express
+X-Content-Type-Options: nosniff
+X-Frame-Options: DENY
+Referrer-Policy: no-referrer
+Content-Security-Policy: default-src 'self'; script-src 'self'; object-src 'none'; frame-ancestors 'none'
+Content-Type: text/html; charset=utf-8
+Content-Length: 262
+ETag: W/"106-l95LFw8dAhPtDwQR9s7DvIwZZuY"
+Date: Fri, 18 Sep 2026 07:07:28 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+
+    <h1>Comments</h1>
+
+    <form method="GET">
+
+      <input
+        name="comment"
+        placeholder="Enter comment"
+      >
+
+      <button type="submit">Submit</button>
+
+    </form>
+
+    <p>Comment: &lt;script&gt;alert(document.domain)&lt;/script&gt;</p>
+  

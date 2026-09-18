@@ -1,0 +1,23 @@
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0                              0100   1314 100   1299 100     15 389.1k   4601                              0100   1314 100   1299 100     15 331.9k   3925                              0100   1314 100   1299 100     15 326.1k   3857                              0
+HTTP/1.1 500 Internal Server Error
+X-Powered-By: Express
+Content-Security-Policy: default-src 'none'
+X-Content-Type-Options: nosniff
+Content-Type: text/html; charset=utf-8
+Content-Length: 1299
+Date: Fri, 18 Sep 2026 06:31:32 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Error</title>
+</head>
+<body>
+<pre>TypeError: Cannot read properties of undefined (reading &#39;username&#39;)<br> &nbsp; &nbsp;at /home/kali/web-vapt-lab/vulnerable-web-app/server.js:46:57<br> &nbsp; &nbsp;at Layer.handleRequest (/home/kali/web-vapt-lab/vulnerable-web-app/node_modules/router/lib/layer.js:152:17)<br> &nbsp; &nbsp;at next (/home/kali/web-vapt-lab/vulnerable-web-app/node_modules/router/lib/route.js:157:13)<br> &nbsp; &nbsp;at Route.dispatch (/home/kali/web-vapt-lab/vulnerable-web-app/node_modules/router/lib/route.js:117:3)<br> &nbsp; &nbsp;at handle (/home/kali/web-vapt-lab/vulnerable-web-app/node_modules/router/index.js:435:11)<br> &nbsp; &nbsp;at Layer.handleRequest (/home/kali/web-vapt-lab/vulnerable-web-app/node_modules/router/lib/layer.js:152:17)<br> &nbsp; &nbsp;at /home/kali/web-vapt-lab/vulnerable-web-app/node_modules/router/index.js:295:15<br> &nbsp; &nbsp;at processParams (/home/kali/web-vapt-lab/vulnerable-web-app/node_modules/router/index.js:582:12)<br> &nbsp; &nbsp;at next (/home/kali/web-vapt-lab/vulnerable-web-app/node_modules/router/index.js:291:5)<br> &nbsp; &nbsp;at read (/home/kali/web-vapt-lab/vulnerable-web-app/node_modules/body-parser/lib/read.js:62:5)</pre>
+</body>
+</html>

@@ -1,0 +1,14 @@
+ENDPOINT STATUS CHECK
+=====================
+
+Target:
+http://127.0.0.1:3000
+
+/login               HTTP 200
+/register            HTTP 200
+/profile             HTTP 200
+/products            HTTP 200
+/comments            HTTP 200
+/upload              HTTP 200
+/admin               HTTP 200
+/api                 HTTP 404

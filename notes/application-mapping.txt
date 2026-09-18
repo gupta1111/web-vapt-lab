@@ -1,0 +1,72 @@
+JUICE SHOP APPLICATION MAPPING
+================================
+
+Target: Web VAPT Training Lab
+Date: 17-09-2026
+
+
+PUBLIC FUNCTIONALITY
+---------------------
+
+1. Login
+2. Register
+3. Products
+4. Comments
+5. File Upload
+
+
+AUTHENTICATED FUNCTIONALITY
+---------------------------
+
+1. User Profile
+2. Products
+3. Comments
+4. File Upload
+5. Logout / Session functionality
+
+
+OTHER FUNCTIONALITY
+-------------------
+
+1. Admin Panel
+2. REST API
+3. Role-based functionality
+4. User management / user records
+5. Training environment interface
+
+
+API / NETWORK OBSERVATIONS
+--------------------------
+
+1. REST API is available in the application.
+2. REST API exposes user-related records.
+3. Observed user record: ID 1, username "testuser", role "user".
+4. Observed user record: ID 2, username "admin", role "admin".
+5. Application contains separate web functionality and API functionality.
+
+
+NOTES
+-----
+
+Only functionality actually observed in the
+running application has been recorded.
+
+Observed application modules:
+
+- Login
+- Register
+- User Profile
+- Products
+- Comments
+- File Upload
+- Admin Panel
+- REST API
+
+Observed user roles:
+
+- testuser → user
+- admin → admin
+
+The application appears to contain role-based
+functionality because different user roles are
+present in the observed data.

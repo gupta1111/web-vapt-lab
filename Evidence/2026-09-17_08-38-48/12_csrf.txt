@@ -1,0 +1,18 @@
+CSRF TESTING
+============
+
+Status:
+WEAKNESS OBSERVED
+
+Finding:
+CSRF protection weakness identified.
+
+Important limitation:
+Authenticated business impact was NOT demonstrated.
+
+Potential controls:
+- Anti-CSRF tokens
+- SameSite cookie configuration
+- Origin/Referer validation where appropriate
+- Do not use GET for state-changing actions
+- Validate state-changing requests server-side

@@ -1,0 +1,13 @@
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0                              0100     89 100     89   0      0  27708      0                              0100     89 100     89   0      0  26511      0                              0100     89 100     89   0      0  25782      0                              0
+HTTP/1.1 200 OK
+X-Powered-By: Express
+Content-Type: application/json; charset=utf-8
+Content-Length: 89
+ETag: W/"59-P5INXg2pPh/fdtsLgOV1VZ4JwDg"
+Date: Fri, 18 Sep 2026 06:34:04 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+[{"id":1,"username":"testuser","role":"user"},{"id":2,"username":"admin","role":"admin"}]

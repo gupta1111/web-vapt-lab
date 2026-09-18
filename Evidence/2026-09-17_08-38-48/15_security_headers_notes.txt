@@ -1,0 +1,21 @@
+SECURITY HEADERS
+================
+
+Status:
+WEAKNESS OBSERVED
+
+Observation:
+Several recommended security headers were not observed on
+tested normal endpoints.
+
+Headers reviewed:
+- Content-Security-Policy
+- X-Content-Type-Options
+- X-Frame-Options
+- Strict-Transport-Security
+- Referrer-Policy
+- Permissions-Policy
+
+Note:
+Header presence should be evaluated according to deployment
+architecture and HTTPS requirements.

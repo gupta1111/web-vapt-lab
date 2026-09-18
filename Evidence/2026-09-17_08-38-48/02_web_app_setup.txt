@@ -1,0 +1,22 @@
+STEP 2 - VULNERABLE WEB APP SETUP
+=================================
+
+Status: COMPLETED
+
+Application:
+Local vulnerable web application
+
+Target:
+http://127.0.0.1:3000
+
+Application components mapped during the assessment:
+
+- Login
+- Register
+- User Profile
+- Products
+- Comments
+- File Upload
+- Admin Panel
+- REST/API functionality
+- Application endpoints

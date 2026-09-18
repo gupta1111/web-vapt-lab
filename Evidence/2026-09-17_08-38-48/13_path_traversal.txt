@@ -1,0 +1,16 @@
+PATH TRAVERSAL TESTING
+======================
+
+Status:
+NOT TESTABLE
+
+Result:
+No suitable file/path attack surface was identified during
+the current application assessment.
+
+Reason:
+Current application functionality did not expose an appropriate
+file/path parameter for meaningful traversal validation.
+
+Therefore:
+Path Traversal is NOT reported as a vulnerability.

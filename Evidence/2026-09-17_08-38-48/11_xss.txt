@@ -1,0 +1,29 @@
+REFLECTED CROSS-SITE SCRIPTING
+==============================
+
+Status:
+CONFIRMED
+
+Vulnerability:
+Reflected XSS
+
+Endpoint:
+/comments?comment=
+
+Type:
+Reflected Cross-Site Scripting
+
+Observation:
+User-controlled input from the comment parameter was reflected
+in the application response without adequate output encoding.
+
+Potential impact:
+Attacker-controlled JavaScript may execute in the victim's
+browser when the crafted request is processed.
+
+Recommended mitigation:
+- Context-aware output encoding
+- Input validation
+- Secure framework escaping
+- Content Security Policy
+- Avoid unsafe DOM sinks

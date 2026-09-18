@@ -1,0 +1,37 @@
+APPLICATION MAPPING
+===================
+
+Target:
+http://127.0.0.1:3000
+
+PUBLIC FUNCTIONALITY
+--------------------
+1. /login
+2. /register
+3. /products
+4. /comments
+
+AUTHENTICATED FUNCTIONALITY
+---------------------------
+1. /profile
+
+ADMIN / OTHER FUNCTIONALITY
+---------------------------
+1. /admin
+2. /upload
+
+API / NETWORK
+-------------
+1. /api
+
+PARAMETER OF INTEREST
+---------------------
+/comments?comment=
+
+APPLICATION MAP STATUS
+----------------------
+COMPLETED
+
+Note:
+Endpoint mapping was performed manually using browser and
+Burp Suite request/response inspection.

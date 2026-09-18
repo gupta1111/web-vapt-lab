@@ -1,0 +1,30 @@
+AUTHORIZED SECURITY TESTING SCOPE
+
+Target:
+Local intentionally vulnerable web application
+
+Environment:
+Kali Linux VMware laboratory
+
+Authorization:
+Testing is performed only against the intentionally vulnerable
+application running inside the local authorized laboratory.
+
+Allowed:
+- Application enumeration
+- HTTP request analysis
+- Authentication testing
+- Authorization testing
+- Input validation testing
+- Vulnerability validation
+- Automated scanning
+- Manual security testing
+- Evidence collection
+
+Out of Scope:
+- Public websites
+- Third-party systems
+- Unauthorized networks
+- Real user accounts
+- Production systems
+- Systems without explicit authorization

@@ -1,0 +1,138 @@
+============================================================
+                 WEB VAPT LAB
+              FINAL ASSESSMENT
+============================================================
+
+Target:
+http://127.0.0.1:3000
+
+Assessment Date:
+Thu Sep 17 08:38:48 AM EDT 2026
+
+------------------------------------------------------------
+STEP   ACTIVITY                         STATUS
+------------------------------------------------------------
+
+01     Lab Setup                        COMPLETED
+
+02     Vulnerable Web App Setup         COMPLETED
+
+03     Application Start                COMPLETED
+
+04     Application Mapping              COMPLETED
+
+05     Reconnaissance                   BASIC COMPLETED
+
+06     Burp Suite Setup                 COMPLETED
+
+07     Authentication Testing           ISSUE OBSERVED
+
+08     Session Testing                  WEAKNESS OBSERVED
+
+09     Authorization / IDOR             ISSUE OBSERVED
+       Classic IDOR                     NOT CONFIRMED
+
+10     SQL Injection                    NOT CONFIRMED
+
+11     XSS                              CONFIRMED
+       Type                             REFLECTED XSS
+
+12     CSRF                             WEAKNESS OBSERVED
+
+13     Path Traversal                  NOT TESTABLE
+
+14     File Upload                     NOT TESTABLE
+
+15     Security Headers                WEAKNESS OBSERVED
+
+16     Security Misconfiguration       WEAKNESS OBSERVED
+
+------------------------------------------------------------
+CONFIRMED FINDING
+------------------------------------------------------------
+
+Reflected XSS
+
+Endpoint:
+/comments?comment=
+
+------------------------------------------------------------
+AUTHORIZATION OBSERVATION
+------------------------------------------------------------
+
+/admin access-control issue identified.
+
+Classic:
+/api/users/{id}
+
+IDOR was NOT confirmed.
+
+------------------------------------------------------------
+SQL INJECTION
+------------------------------------------------------------
+
+Login SQL Injection was tested.
+
+Result:
+NOT CONFIRMED.
+
+------------------------------------------------------------
+CSRF
+------------------------------------------------------------
+
+CSRF protection weakness identified.
+
+Authenticated impact:
+NOT DEMONSTRATED.
+
+------------------------------------------------------------
+PATH TRAVERSAL
+------------------------------------------------------------
+
+No suitable file/path attack surface.
+
+Result:
+NOT TESTABLE.
+
+------------------------------------------------------------
+FILE UPLOAD
+------------------------------------------------------------
+
+UI exists.
+
+Backend upload functionality:
+NOT IMPLEMENTED.
+
+Result:
+NOT TESTABLE.
+
+------------------------------------------------------------
+SECURITY HEADERS
+------------------------------------------------------------
+
+Several recommended security headers were not observed.
+
+------------------------------------------------------------
+SECURITY MISCONFIGURATION
+------------------------------------------------------------
+
+Observed:
+- Express/X-Powered-By disclosure
+- TRACE blocked
+- .env inaccessible
+- robots.txt inaccessible
+- No major verbose error disclosure observed
+
+------------------------------------------------------------
+REPORTING PRINCIPLE
+------------------------------------------------------------
+
+Confirmed vulnerabilities are reported only where the current
+assessment provides reproducible evidence.
+
+Untested or unconfirmed vulnerabilities are not presented as
+confirmed findings.
+
+============================================================
+                  END OF ASSESSMENT
+============================================================

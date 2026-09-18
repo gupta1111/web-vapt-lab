@@ -1,0 +1,8 @@
+
+    <h1>Comments</h1>
+    <form method="GET">
+      <input name="comment" placeholder="Enter comment">
+      <button>Submit</button>
+    </form>
+    <p>Comment: <script>alert(document.domain)</script></p>
+  

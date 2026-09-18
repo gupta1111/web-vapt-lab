@@ -1,0 +1,18 @@
+SESSION TESTING
+===============
+
+Status:
+WEAKNESS OBSERVED
+
+Finding:
+Effective session enforcement was not observed.
+
+Testing:
+- Reviewed session-dependent behavior
+- Compared authenticated and unauthenticated access
+- Inspected requests/responses
+- Observed application access-control behavior
+
+Important:
+No claim of session hijacking or session fixation is made unless
+such behavior is separately reproduced.

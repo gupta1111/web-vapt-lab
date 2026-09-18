@@ -1,0 +1,22 @@
+TARGET INFORMATION
+
+Application:
+OWASP Juice Shop
+
+Environment:
+Local Kali Linux VMware Lab
+
+Target URL:
+http://127.0.0.1:3000
+
+Application Port:
+3000/TCP
+
+Container Name:
+juice-shop
+
+Testing Type:
+Authorized Local Vulnerability Assessment
+
+Scope:
+Juice Shop application only

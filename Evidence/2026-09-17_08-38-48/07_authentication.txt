@@ -1,0 +1,22 @@
+AUTHENTICATION TESTING
+======================
+
+Status:
+ISSUE OBSERVED
+
+Finding:
+Authentication enforcement weakness identified.
+
+Assessment:
+Application access controls did not consistently enforce the
+expected authentication requirement on tested functionality.
+
+Testing approach:
+- Accessed application functionality
+- Observed unauthenticated behavior
+- Compared expected and actual access behavior
+- Reviewed HTTP requests/responses in Burp Suite
+
+Important:
+Final severity should depend on the actual business impact
+and reproducibility.

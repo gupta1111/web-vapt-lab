@@ -1,0 +1,14 @@
+HTTP/1.1 401 Unauthorized
+X-Powered-By: Express
+X-Content-Type-Options: nosniff
+X-Frame-Options: DENY
+Referrer-Policy: no-referrer
+Content-Security-Policy: default-src 'self'; script-src 'self'; object-src 'none'; frame-ancestors 'none'
+Content-Type: application/json; charset=utf-8
+Content-Length: 32
+ETag: W/"20-UIuM3vidUIiqA5pzEX4VZfS7ML0"
+Date: Fri, 18 Sep 2026 07:04:31 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+{"error":"Invalid bearer token"}

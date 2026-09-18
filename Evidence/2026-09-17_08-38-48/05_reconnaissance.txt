@@ -1,0 +1,18 @@
+RECONNAISSANCE
+==============
+
+Status:
+BASIC RECON COMPLETED
+
+Target:
+http://127.0.0.1:3000
+
+Activities:
+- Application availability check
+- HTTP response inspection
+- Server/technology header inspection
+- Endpoint identification
+- Application mapping
+- Burp-based request/response observation
+
+Further manual testing can be performed where required.

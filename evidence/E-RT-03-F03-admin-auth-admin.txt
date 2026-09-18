@@ -1,0 +1,18 @@
+HTTP/1.1 200 OK
+X-Powered-By: Express
+X-Content-Type-Options: nosniff
+X-Frame-Options: DENY
+Referrer-Policy: no-referrer
+Content-Security-Policy: default-src 'self'; script-src 'self'; object-src 'none'; frame-ancestors 'none'
+Content-Type: text/html; charset=utf-8
+Content-Length: 103
+ETag: W/"67-TQt3UQtxohriRZY+6GxJeVjYq3g"
+Date: Fri, 18 Sep 2026 07:00:38 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+
+    <h1>Admin Panel</h1>
+    <p>Authorized administrator: admin</p>
+    <p>Training environment</p>
+  

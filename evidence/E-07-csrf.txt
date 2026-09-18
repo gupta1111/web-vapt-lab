@@ -1,0 +1,18 @@
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0                              0100    201 100    155 100     46  56922  16893                              0100    201 100    155 100     46  54195  16083                              0100    201 100    155 100     46  52329  15530                              0
+HTTP/1.1 200 OK
+X-Powered-By: Express
+Content-Type: text/html; charset=utf-8
+Content-Length: 155
+ETag: W/"9b-jvovuHasO/nxgZoZfzmwkZIveVg"
+Date: Fri, 18 Sep 2026 06:35:04 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+
+    <h1>Registration Successful</h1>
+    <p>Username: csrf-final-test</p>
+    <p>Account created successfully.</p>
+    <a href="/login">Go to Login</a>
+  

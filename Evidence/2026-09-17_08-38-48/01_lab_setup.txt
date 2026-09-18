@@ -1,0 +1,22 @@
+STEP 1 - LAB SETUP
+==================
+
+Status: COMPLETED
+
+Environment:
+OS       : Linux
+Kernel   : 7.1.5+kali-amd64
+Hostname : kali
+User     : kali
+
+Project Directory:
+/home/kali/web-vapt-lab
+
+Target:
+http://127.0.0.1:3000
+
+Tools checked:
+- curl
+- nmap
+- docker
+- Burp Suite (manual)

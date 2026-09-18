@@ -1,0 +1,21 @@
+AUTHORIZATION / IDOR TESTING
+============================
+
+Status:
+AUTHORIZATION ISSUE OBSERVED
+
+Confirmed observation:
+ /admin access-control issue
+
+IDOR:
+Classic /api/users/{id} IDOR was NOT CONFIRMED.
+
+Testing:
+- Reviewed authorization behavior
+- Tested access to administrative functionality
+- Reviewed API/object access patterns
+- Compared expected and actual authorization behavior
+
+Important:
+IDOR is not reported as confirmed because unauthorized object
+access through /api/users/{id} was not demonstrated.
