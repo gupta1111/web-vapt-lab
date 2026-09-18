@@ -980,3 +980,7 @@ https://www.linkedin.com/in/bhola-gupta-729668150/
 ### Juice Shop — Application Homepage
 
 ![Juice Shop Homepage](screenshots/01-juice-shop-homepage.png)
+ 
+### Burp Suite — HTTP History
+
+![Burp Suite HTTP History](screenshots/02-burp-http-history.png)

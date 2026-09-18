@@ -1,0 +1,55 @@
+Finding ID: F-06
+Title: Reflected Cross-Site Scripting (XSS)
+
+Endpoint:
+GET /comments
+
+Parameter:
+comment
+
+Original Test Payload:
+<script>alert(document.domain)</script>
+
+Observed Result:
+The application reflected the supplied script content directly into the HTTP response without output encoding.
+
+Impact:
+An attacker could potentially execute JavaScript in a victim's browser when the victim visits a crafted URL.
+
+Remediation:
+Apply context-appropriate output encoding before rendering user-controlled input. Implement a restrictive Content Security Policy as defense in depth.
+
+Retest Result:
+After remediation, the payload was HTML-encoded and JavaScript execution did not occur.
+
+Status:
+Fixed / PASS
+EOF 
+
+cat > ~/web-vapt-lab/ai-vapt/input/F-06-reflected-xss.txt <<'EOF'
+Finding ID: F-06
+Title: Reflected Cross-Site Scripting (XSS)
+
+Endpoint:
+GET /comments
+
+Parameter:
+comment
+
+Original Test Payload:
+<script>alert(document.domain)</script>
+
+Observed Result:
+The application reflected the supplied script content directly into the HTTP response without output encoding.
+
+Impact:
+An attacker could potentially execute JavaScript in a victim's browser when the victim visits a crafted URL.
+
+Remediation:
+Apply context-appropriate output encoding before rendering user-controlled input. Implement a restrictive Content Security Policy as defense in depth.
+
+Retest Result:
+After remediation, the payload was HTML-encoded and JavaScript execution did not occur.
+
+Status:
+Fixed / PASS

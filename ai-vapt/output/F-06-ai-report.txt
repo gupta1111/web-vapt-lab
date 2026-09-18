@@ -1,0 +1,39 @@
+Here is the professional security finding based on the provided VAPT findin[6D[K
+finding:
+
+**Finding Title:** Reflected Cross-Site Scripting (XSS)
+
+**Vulnerability Description:** A vulnerability was identified in the applic[6D[K
+application's handling of user-controlled input, specifically the 'comment'[9D[K
+'comment' parameter in the GET /comments endpoint, where the application fa[2D[K
+fails to properly encode user-input script content, potentially leading to [K
+the execution of malicious JavaScript in a victim's browser.
+
+**Affected Endpoint / Parameter:**
+Endpoint: GET /comments
+Parameter: comment
+
+**Technical Root Cause:** The application does not perform adequate input v[1D[K
+validation and output encoding on the 'comment' parameter, allowing user-co[7D[K
+user-controlled input to be reflected directly into the HTTP response witho[5D[K
+without proper sanitization.
+
+**Security Impact:** An attacker could potentially execute JavaScript in a [K
+victim's browser when the victim visits a crafted URL, leading to a Cross-S[7D[K
+Cross-Site Scripting (XSS) attack.
+
+**Attack Scenario:** An attacker discovers a vulnerability in the applicati[9D[K
+application's comment system and crafts a malicious comment payload contain[7D[K
+containing JavaScript code. The attacker then shares the comment link with [K
+a target user, who visits the link and executes the malicious JavaScript, p[1D[K
+potentially stealing sensitive information or taking control of the user's [K
+session.
+
+**Severity Assessment:** The severity of this vulnerability is moderate to [K
+high, as it can lead to a significant security impact, including the theft [K
+of sensitive information or the compromise of user sessions.
+
+**CWE Mapping:** CWE-89: Improper Neutralization of Input During Web Page G[1D[K
+Generation ('Cross-site Scripting (XSS)')
+
+**OWASP Top 10 Mapping

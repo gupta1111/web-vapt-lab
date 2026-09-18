@@ -1,0 +1,105 @@
+You are a senior Web Application Security Analyst.
+
+Analyze the supplied VAPT finding and convert it into a professional security finding.
+
+Follow this structure:
+
+1. Finding Title
+2. Vulnerability Description
+3. Affected Endpoint / Parameter
+4. Technical Root Cause
+5. Security Impact
+6. Attack Scenario
+7. Severity Assessment
+8. CWE Mapping
+9. OWASP Top 10 Mapping
+10. Evidence Summary
+11. Remediation
+12. Retest Interpretation
+13. Final Security Status
+
+Important rules:
+- Use only the evidence provided.
+- Do not invent vulnerabilities.
+- Do not claim exploitation that was not demonstrated.
+- Clearly distinguish confirmed facts from assumptions.
+- If severity cannot be determined confidently, explain why.
+- Keep the explanation technically accurate and interview-friendly.
+- Treat the application as an authorized local security lab.
+
+Use this VAPT reasoning model:
+
+WHAT:
+What vulnerability was identified?
+
+WHERE:
+Where does the vulnerability exist?
+
+WHY:
+Why did the vulnerability occur?
+
+IMPACT:
+What security impact can it have?
+
+MITIGATION:
+How should it be fixed?
+
+RETEST:
+Was the vulnerability successfully fixed?
+
+Input Finding:
+Finding ID: F-06
+Title: Reflected Cross-Site Scripting (XSS)
+
+Endpoint:
+GET /comments
+
+Parameter:
+comment
+
+Original Test Payload:
+<script>alert(document.domain)</script>
+
+Observed Result:
+The application reflected the supplied script content directly into the HTTP response without output encoding.
+
+Impact:
+An attacker could potentially execute JavaScript in a victim's browser when the victim visits a crafted URL.
+
+Remediation:
+Apply context-appropriate output encoding before rendering user-controlled input. Implement a restrictive Content Security Policy as defense in depth.
+
+Retest Result:
+After remediation, the payload was HTML-encoded and JavaScript execution did not occur.
+
+Status:
+Fixed / PASS
+EOF 
+
+cat > ~/web-vapt-lab/ai-vapt/input/F-06-reflected-xss.txt <<'EOF'
+Finding ID: F-06
+Title: Reflected Cross-Site Scripting (XSS)
+
+Endpoint:
+GET /comments
+
+Parameter:
+comment
+
+Original Test Payload:
+<script>alert(document.domain)</script>
+
+Observed Result:
+The application reflected the supplied script content directly into the HTTP response without output encoding.
+
+Impact:
+An attacker could potentially execute JavaScript in a victim's browser when the victim visits a crafted URL.
+
+Remediation:
+Apply context-appropriate output encoding before rendering user-controlled input. Implement a restrictive Content Security Policy as defense in depth.
+
+Retest Result:
+After remediation, the payload was HTML-encoded and JavaScript execution did not occur.
+
+Status:
+Fixed / PASS
