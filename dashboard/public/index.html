@@ -1,208 +1,2983 @@
 cat > index.html <<'EOF'
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI VAPT Security Dashboard</title>
-    <link rel="stylesheet" href="style.css">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        AI VAPT Security Dashboard
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+    <style>
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .add-finding-button {
+            border: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 14px;
+            background: #2563eb;
+            color: white;
+        }
+
+        .add-finding-button:hover {
+            background: #1d4ed8;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(5px);
+            padding: 30px 15px;
+            overflow-y: auto;
+        }
+
+        .modal.show {
+            display: block;
+        }
+
+        .modal-content {
+            width: min(950px, 100%);
+            margin: 20px auto;
+            background: #111827;
+            border: 1px solid #374151;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow:
+                0 25px 80px rgba(0,0,0,0.5);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 24px;
+            border-bottom: 1px solid #374151;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+        }
+
+        .modal-header p {
+            margin: 5px 0 0;
+            color: #9ca3af;
+            font-size: 12px;
+        }
+
+        .close-button {
+            border: none;
+            background: transparent;
+            color: #9ca3af;
+            font-size: 30px;
+            cursor: pointer;
+        }
+
+        .close-button:hover {
+            color: white;
+        }
+
+        .modal-body {
+            padding: 24px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            font-size: 13px;
+            font-weight: 700;
+            color: #d1d5db;
+        }
+
+        .required {
+            color: #ef4444;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 11px 12px;
+            border: 1px solid #374151;
+            border-radius: 8px;
+            background: #0b1220;
+            color: #f9fafb;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .form-group textarea {
+            min-height: 95px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #2563eb;
+            box-shadow:
+                0 0 0 2px rgba(37,99,235,0.15);
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid #374151;
+        }
+
+        .cancel-button,
+        .save-button,
+        .delete-button,
+        .edit-button {
+            border: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        .cancel-button {
+            background: #374151;
+            color: white;
+        }
+
+        .save-button {
+            background: #16a34a;
+            color: white;
+        }
+
+        .delete-button {
+            background: #dc2626;
+            color: white;
+        }
+
+        .edit-button {
+            background: #2563eb;
+            color: white;
+        }
+
+        .cancel-button:hover {
+            background: #4b5563;
+        }
+
+        .save-button:hover {
+            background: #15803d;
+        }
+
+        .delete-button:hover {
+            background: #b91c1c;
+        }
+
+        .edit-button:hover {
+            background: #1d4ed8;
+        }
+
+        .finding-meta {
+            display: grid;
+            grid-template-columns:
+                repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .meta-box {
+            background: #0b1220;
+            border: 1px solid #374151;
+            border-radius: 8px;
+            padding: 12px;
+        }
+
+        .meta-label {
+            display: block;
+            color: #6b7280;
+            font-size: 10px;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .meta-value {
+            color: #f9fafb;
+            font-size: 13px;
+            font-weight: 600;
+            word-break: break-word;
+        }
+
+        .modal-section {
+            margin-top: 20px;
+        }
+
+        .modal-section h3 {
+            font-size: 14px;
+            color: #93c5fd;
+            margin-bottom: 8px;
+        }
+
+        .modal-section p {
+            color: #d1d5db;
+            line-height: 1.6;
+            font-size: 13px;
+            white-space: pre-wrap;
+        }
+
+        .modal-footer {
+            padding: 18px 24px;
+            border-top: 1px solid #374151;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-left,
+        .footer-right {
+            display: flex;
+            gap: 10px;
+        }
+
+        .edit-form {
+            display: none;
+        }
+
+        .edit-form.show {
+            display: block;
+        }
+
+        .detail-view.hidden {
+            display: none;
+        }
+
+        .empty-message {
+            text-align: center;
+            color: #9ca3af;
+            padding: 30px;
+        }
+
+        @media (max-width: 800px) {
+
+            .finding-meta {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+        }
+
+        @media (max-width: 650px) {
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full {
+                grid-column: auto;
+            }
+
+            .finding-meta {
+                grid-template-columns: 1fr;
+            }
+
+            .header-actions {
+                flex-direction: column;
+                align-items: flex-end;
+            }
+
+            .modal {
+                padding: 10px;
+            }
+
+            .modal-content {
+                margin: 5px auto;
+            }
+
+            .modal-body {
+                padding: 18px;
+            }
+
+            .modal-footer {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .footer-left,
+            .footer-right {
+                justify-content: stretch;
+            }
+
+        }
+
+    </style>
+
 </head>
+
 
 <body>
 
-<header>
+
+<header class="dashboard-header">
+
     <div>
-        <h1>AI VAPT Security Dashboard</h1>
-        <p>Web Application Security Assessment Center</p>
+
+        <h1>
+            AI VAPT Security Dashboard
+        </h1>
+
+        <p>
+            Web Application Security Assessment Center
+        </p>
+
     </div>
 
-    <span class="status">● LAB ONLINE</span>
+
+    <div class="header-actions">
+
+        <button
+            class="add-finding-button"
+            onclick="openAddFindingModal()"
+        >
+            + Add Finding
+        </button>
+
+
+        <div class="status-indicator">
+
+            <span class="status-dot"></span>
+
+            Lab Online
+
+        </div>
+
+    </div>
+
 </header>
 
-<main>
 
-    <section class="cards">
+<main class="dashboard-container">
 
-        <div class="card">
-            <span>Total Findings</span>
-            <strong>12</strong>
+
+    <!-- SUMMARY -->
+
+    <section class="summary-grid">
+
+        <div class="summary-card">
+
+            <div class="summary-label">
+                Total Findings
+            </div>
+
+            <div
+                class="summary-value"
+                id="total-findings"
+            >
+                0
+            </div>
+
         </div>
 
-        <div class="card critical">
-            <span>Critical</span>
-            <strong>1</strong>
+
+        <div class="summary-card">
+
+            <div class="summary-label">
+                Critical
+            </div>
+
+            <div
+                class="summary-value critical-text"
+                id="critical-findings"
+            >
+                0
+            </div>
+
         </div>
 
-        <div class="card high">
-            <span>High</span>
-            <strong>4</strong>
+
+        <div class="summary-card">
+
+            <div class="summary-label">
+                High
+            </div>
+
+            <div
+                class="summary-value high-text"
+                id="high-findings"
+            >
+                0
+            </div>
+
         </div>
 
-        <div class="card medium">
-            <span>Medium</span>
-            <strong>5</strong>
+
+        <div class="summary-card">
+
+            <div class="summary-label">
+                Medium
+            </div>
+
+            <div
+                class="summary-value medium-text"
+                id="medium-findings"
+            >
+                0
+            </div>
+
         </div>
 
-        <div class="card low">
-            <span>Low</span>
-            <strong>2</strong>
+
+        <div class="summary-card">
+
+            <div class="summary-label">
+                Low
+            </div>
+
+            <div
+                class="summary-value low-text"
+                id="low-findings"
+            >
+                0
+            </div>
+
         </div>
 
     </section>
 
 
-    <section class="grid">
-
-        <div class="panel">
-            <h2>Vulnerability Overview</h2>
-
-            <div class="bar">
-                <label>Critical</label>
-                <div><span style="width:15%"></span></div>
-            </div>
-
-            <div class="bar">
-                <label>High</label>
-                <div><span style="width:45%"></span></div>
-            </div>
-
-            <div class="bar">
-                <label>Medium</label>
-                <div><span style="width:65%"></span></div>
-            </div>
-
-            <div class="bar">
-                <label>Low</label>
-                <div><span style="width:30%"></span></div>
-            </div>
-        </div>
-
-
-        <div class="panel">
-            <h2>Assessment Status</h2>
-
-            <div class="status-row">
-                <span>Open Findings</span>
-                <strong>7</strong>
-            </div>
-
-            <div class="status-row">
-                <span>Retest Pending</span>
-                <strong>2</strong>
-            </div>
-
-            <div class="status-row">
-                <span>Remediated</span>
-                <strong>3</strong>
-            </div>
-
-            <div class="status-row">
-                <span>Reports</span>
-                <strong>2</strong>
-            </div>
-        </div>
-
-    </section>
-
+    <!-- VULNERABILITY OVERVIEW -->
 
     <section class="panel">
 
-        <h2>Recent Security Findings</h2>
+        <div class="panel-header">
 
-        <table>
+            <div>
 
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Finding</th>
-                    <th>Severity</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
+                <h2>
+                    Vulnerability Overview
+                </h2>
 
-            <tbody>
+                <p>
+                    Findings grouped by severity
+                </p>
 
-                <tr>
-                    <td>VAPT-001</td>
-                    <td>Stored XSS</td>
-                    <td>
-                        <span class="badge high-bg">HIGH</span>
-                    </td>
-                    <td>Open</td>
-                </tr>
+            </div>
 
-                <tr>
-                    <td>VAPT-002</td>
-                    <td>IDOR / Broken Access Control</td>
-                    <td>
-                        <span class="badge high-bg">HIGH</span>
-                    </td>
-                    <td>Retest</td>
-                </tr>
+        </div>
 
-                <tr>
-                    <td>VAPT-003</td>
-                    <td>SQL Injection</td>
-                    <td>
-                        <span class="badge critical-bg">CRITICAL</span>
-                    </td>
-                    <td>Open</td>
-                </tr>
 
-            </tbody>
+        <div class="severity-bars">
 
-        </table>
+
+            <div class="severity-row">
+
+                <div class="severity-info">
+
+                    <span>
+                        Critical
+                    </span>
+
+                    <span id="critical-count">
+                        0
+                    </span>
+
+                </div>
+
+                <div class="bar-container">
+
+                    <div
+                        id="critical-bar"
+                        class="severity-bar critical-bar"
+                        style="width:0%"
+                    ></div>
+
+                </div>
+
+            </div>
+
+
+            <div class="severity-row">
+
+                <div class="severity-info">
+
+                    <span>
+                        High
+                    </span>
+
+                    <span id="high-count">
+                        0
+                    </span>
+
+                </div>
+
+                <div class="bar-container">
+
+                    <div
+                        id="high-bar"
+                        class="severity-bar high-bar"
+                        style="width:0%"
+                    ></div>
+
+                </div>
+
+            </div>
+
+
+            <div class="severity-row">
+
+                <div class="severity-info">
+
+                    <span>
+                        Medium
+                    </span>
+
+                    <span id="medium-count">
+                        0
+                    </span>
+
+                </div>
+
+                <div class="bar-container">
+
+                    <div
+                        id="medium-bar"
+                        class="severity-bar medium-bar"
+                        style="width:0%"
+                    ></div>
+
+                </div>
+
+            </div>
+
+
+            <div class="severity-row">
+
+                <div class="severity-info">
+
+                    <span>
+                        Low
+                    </span>
+
+                    <span id="low-count">
+                        0
+                    </span>
+
+                </div>
+
+                <div class="bar-container">
+
+                    <div
+                        id="low-bar"
+                        class="severity-bar low-bar"
+                        style="width:0%"
+                    ></div>
+
+                </div>
+
+            </div>
+
+
+        </div>
 
     </section>
 
 
+    <!-- STATUS -->
+
     <section class="panel">
 
-        <h2>OWASP Security Coverage</h2>
+        <div class="panel-header">
+
+            <div>
+
+                <h2>
+                    Assessment Status
+                </h2>
+
+                <p>
+                    Current vulnerability lifecycle
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="status-grid">
+
+            <div class="status-card">
+
+                <span
+                    class="status-number"
+                    id="open-count"
+                >
+                    0
+                </span>
+
+                <span class="status-title">
+                    Open
+                </span>
+
+            </div>
+
+
+            <div class="status-card">
+
+                <span
+                    class="status-number"
+                    id="retest-count"
+                >
+                    0
+                </span>
+
+                <span class="status-title">
+                    Retest
+                </span>
+
+            </div>
+
+
+            <div class="status-card">
+
+                <span
+                    class="status-number"
+                    id="fixed-count"
+                >
+                    0
+                </span>
+
+                <span class="status-title">
+                    Fixed
+                </span>
+
+            </div>
+
+
+            <div class="status-card">
+
+                <span
+                    class="status-number"
+                    id="report-count"
+                >
+                    0
+                </span>
+
+                <span class="status-title">
+                    Report Ready
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- FINDINGS TABLE -->
+
+    <section class="panel">
+
+        <div class="panel-header">
+
+            <div>
+
+                <h2>
+                    Security Findings
+                </h2>
+
+                <p>
+                    Click a finding for technical details
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>ID</th>
+
+                        <th>Finding</th>
+
+                        <th>Severity</th>
+
+                        <th>Endpoint</th>
+
+                        <th>Status</th>
+
+                        <th>Retest</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="findings-table-body">
+
+                    <tr>
+
+                        <td colspan="6">
+                            Loading findings...
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <!-- OWASP -->
+
+    <section class="panel">
+
+        <div class="panel-header">
+
+            <div>
+
+                <h2>
+                    OWASP Top 10 Coverage
+                </h2>
+
+                <p>
+                    Assessment mapping reference
+                </p>
+
+            </div>
+
+        </div>
+
 
         <div class="owasp-grid">
 
-            <div>
-                A01 Broken Access Control
-                <b>✓</b>
+            <div class="owasp-item">
+                <strong>A01</strong>
+                <span>Broken Access Control</span>
             </div>
 
-            <div>
-                A02 Cryptographic Failures
-                <b>✓</b>
+            <div class="owasp-item">
+                <strong>A02</strong>
+                <span>Cryptographic Failures</span>
             </div>
 
-            <div>
-                A03 Injection
-                <b>✓</b>
+            <div class="owasp-item">
+                <strong>A03</strong>
+                <span>Injection</span>
             </div>
 
-            <div>
-                A05 Security Misconfiguration
-                <b>✓</b>
+            <div class="owasp-item">
+                <strong>A04</strong>
+                <span>Insecure Design</span>
             </div>
 
-            <div>
-                A07 Authentication Failures
-                <b>✓</b>
+            <div class="owasp-item">
+                <strong>A05</strong>
+                <span>Security Misconfiguration</span>
             </div>
 
-            <div>
-                A10 SSRF
-                <b>✓</b>
+            <div class="owasp-item">
+                <strong>A06</strong>
+                <span>Vulnerable Components</span>
+            </div>
+
+            <div class="owasp-item">
+                <strong>A07</strong>
+                <span>Authentication Failures</span>
+            </div>
+
+            <div class="owasp-item">
+                <strong>A08</strong>
+                <span>Software Integrity Failures</span>
+            </div>
+
+            <div class="owasp-item">
+                <strong>A09</strong>
+                <span>Logging & Monitoring</span>
+            </div>
+
+            <div class="owasp-item">
+                <strong>A10</strong>
+                <span>SSRF</span>
             </div>
 
         </div>
 
     </section>
+
 
 </main>
 
 
-<footer>
-    AI-Assisted Web VAPT Lab • Authorized Security Testing Only
-</footer>
+<!-- =========================================
+     DETAIL / EDIT MODAL
+========================================= -->
+
+<div
+    id="finding-modal"
+    class="modal"
+>
+
+    <div class="modal-content">
+
+
+        <div class="modal-header">
+
+            <div>
+
+                <h2 id="modal-title">
+                    Finding Details
+                </h2>
+
+                <p id="modal-subtitle">
+                    Security assessment finding
+                </p>
+
+            </div>
+
+
+            <button
+                class="close-button"
+                onclick="closeFindingModal()"
+            >
+                &times;
+            </button>
+
+        </div>
+
+
+        <!-- DETAIL VIEW -->
+
+        <div
+            id="detail-view"
+            class="modal-body detail-view"
+        >
+
+            <div class="finding-meta">
+
+
+                <div class="meta-box">
+
+                    <span class="meta-label">
+                        Finding ID
+                    </span>
+
+                    <span
+                        class="meta-value"
+                        id="modal-finding-id"
+                    ></span>
+
+                </div>
+
+
+                <div class="meta-box">
+
+                    <span class="meta-label">
+                        Severity
+                    </span>
+
+                    <span
+                        class="meta-value"
+                        id="modal-severity"
+                    ></span>
+
+                </div>
+
+
+                <div class="meta-box">
+
+                    <span class="meta-label">
+                        Status
+                    </span>
+
+                    <span
+                        class="meta-value"
+                        id="modal-status"
+                    ></span>
+
+                </div>
+
+
+                <div class="meta-box">
+
+                    <span class="meta-label">
+                        Retest
+                    </span>
+
+                    <span
+                        class="meta-value"
+                        id="modal-retest"
+                    ></span>
+
+                </div>
+
+
+                <div class="meta-box">
+
+                    <span class="meta-label">
+                        Endpoint
+                    </span>
+
+                    <span
+                        class="meta-value"
+                        id="modal-endpoint"
+                    ></span>
+
+                </div>
+
+
+                <div class="meta-box">
+
+                    <span class="meta-label">
+                        Parameter
+                    </span>
+
+                    <span
+                        class="meta-value"
+                        id="modal-parameter"
+                    ></span>
+
+                </div>
+
+
+                <div class="meta-box">
+
+                    <span class="meta-label">
+                        OWASP
+                    </span>
+
+                    <span
+                        class="meta-value"
+                        id="modal-owasp"
+                    ></span>
+
+                </div>
+
+
+                <div class="meta-box">
+
+                    <span class="meta-label">
+                        CWE
+                    </span>
+
+                    <span
+                        class="meta-value"
+                        id="modal-cwe"
+                    ></span>
+
+                </div>
+
+
+            </div>
+
+
+            <div class="modal-section">
+
+                <h3>
+                    Description
+                </h3>
+
+                <p id="modal-description"></p>
+
+            </div>
+
+
+            <div class="modal-section">
+
+                <h3>
+                    Impact
+                </h3>
+
+                <p id="modal-impact"></p>
+
+            </div>
+
+
+            <div class="modal-section">
+
+                <h3>
+                    Root Cause
+                </h3>
+
+                <p id="modal-rootcause"></p>
+
+            </div>
+
+
+            <div class="modal-section">
+
+                <h3>
+                    Evidence
+                </h3>
+
+                <p id="modal-evidence"></p>
+
+            </div>
+
+
+            <div class="modal-section">
+
+                <h3>
+                    Remediation
+                </h3>
+
+                <p id="modal-remediation"></p>
+
+            </div>
+
+
+            <div class="modal-section">
+
+                <h3>
+                    Retest Result
+                </h3>
+
+                <p id="modal-retest-result"></p>
+
+            </div>
+
+        </div>
+
+
+        <!-- EDIT VIEW -->
+
+        <div
+            id="edit-form-container"
+            class="modal-body edit-form"
+        >
+
+            <form id="edit-finding-form">
+
+                <div class="form-grid">
+
+
+                    <div class="form-group full">
+
+                        <label>
+                            Finding Title *
+                        </label>
+
+                        <input
+                            type="text"
+                            id="edit-title"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Severity *
+                        </label>
+
+                        <select
+                            id="edit-severity"
+                            required
+                        >
+
+                            <option value="Critical">
+                                Critical
+                            </option>
+
+                            <option value="High">
+                                High
+                            </option>
+
+                            <option value="Medium">
+                                Medium
+                            </option>
+
+                            <option value="Low">
+                                Low
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Status
+                        </label>
+
+                        <select id="edit-status">
+
+                            <option value="Open">
+                                Open
+                            </option>
+
+                            <option value="Retest">
+                                Retest
+                            </option>
+
+                            <option value="Fixed">
+                                Fixed
+                            </option>
+
+                            <option value="Report Ready">
+                                Report Ready
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Endpoint *
+                        </label>
+
+                        <input
+                            type="text"
+                            id="edit-endpoint"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Parameter
+                        </label>
+
+                        <input
+                            type="text"
+                            id="edit-parameter"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            OWASP
+                        </label>
+
+                        <input
+                            type="text"
+                            id="edit-owasp"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            CWE
+                        </label>
+
+                        <input
+                            type="text"
+                            id="edit-cwe"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group full">
+
+                        <label>
+                            Description
+                        </label>
+
+                        <textarea
+                            id="edit-description"
+                        ></textarea>
+
+                    </div>
+
+
+                    <div class="form-group full">
+
+                        <label>
+                            Impact
+                        </label>
+
+                        <textarea
+                            id="edit-impact"
+                        ></textarea>
+
+                    </div>
+
+
+                    <div class="form-group full">
+
+                        <label>
+                            Root Cause
+                        </label>
+
+                        <textarea
+                            id="edit-rootcause"
+                        ></textarea>
+
+                    </div>
+
+
+                    <div class="form-group full">
+
+                        <label>
+                            Evidence
+                        </label>
+
+                        <textarea
+                            id="edit-evidence"
+                        ></textarea>
+
+                    </div>
+
+
+                    <div class="form-group full">
+
+                        <label>
+                            Remediation
+                        </label>
+
+                        <textarea
+                            id="edit-remediation"
+                        ></textarea>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Retest
+                        </label>
+
+                        <select id="edit-retest">
+
+                            <option value="Pending">
+                                Pending
+                            </option>
+
+                            <option value="PASS">
+                                PASS
+                            </option>
+
+                            <option value="FAIL">
+                                FAIL
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Retest Result
+                        </label>
+
+                        <input
+                            type="text"
+                            id="edit-retest-result"
+                        >
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="form-actions">
+
+                    <button
+                        type="button"
+                        class="cancel-button"
+                        onclick="showDetailView()"
+                    >
+                        Cancel
+                    </button>
+
+
+                    <button
+                        type="submit"
+                        class="save-button"
+                    >
+                        Save Changes
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+
+        <!-- FOOTER -->
+
+        <div class="modal-footer">
+
+            <div class="footer-left">
+
+                <button
+                    id="edit-button"
+                    class="edit-button"
+                    onclick="startEditFinding()"
+                >
+                    Edit Finding
+                </button>
+
+
+                <button
+                    id="delete-button"
+                    class="delete-button"
+                    onclick="deleteCurrentFinding()"
+                >
+                    Delete
+                </button>
+
+            </div>
+
+
+            <div class="footer-right">
+
+                <button
+                    class="cancel-button"
+                    onclick="closeFindingModal()"
+                >
+                    Close
+                </button>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<!-- =========================================
+     ADD FINDING MODAL
+========================================= -->
+
+<div
+    id="add-finding-modal"
+    class="modal"
+>
+
+    <div class="modal-content">
+
+
+        <div class="modal-header">
+
+            <div>
+
+                <h2>
+                    Add Security Finding
+                </h2>
+
+                <p>
+                    Add a manually validated assessment finding
+                </p>
+
+            </div>
+
+
+            <button
+                class="close-button"
+                onclick="closeAddFindingModal()"
+            >
+                &times;
+            </button>
+
+        </div>
+
+
+        <div class="modal-body">
+
+            <form id="add-finding-form">
+
+
+                <div class="form-grid">
+
+
+                    <div class="form-group full">
+
+                        <label>
+                            Finding Title
+                            <span class="required">*</span>
+                        </label>
+
+                        <input
+                            type="text"
+                            id="finding-title"
+                            placeholder="Example: Missing Security Headers"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Severity *
+                        </label>
+
+                        <select
+                            id="finding-severity"
+                            required
+                        >
+
+                            <option value="">
+                                Select Severity
+                            </option>
+
+                            <option value="Critical">
+                                Critical
+                            </option>
+
+                            <option value="High">
+                                High
+                            </option>
+
+                            <option value="Medium">
+                                Medium
+                            </option>
+
+                            <option value="Low">
+                                Low
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Status
+                        </label>
+
+                        <select id="finding-status">
+
+                            <option value="Open">
+                                Open
+                            </option>
+
+                            <option value="Retest">
+                                Retest
+                            </option>
+
+                            <option value="Fixed">
+                                Fixed
+                            </option>
+
+                            <option value="Report Ready">
+                                Report Ready
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Endpoint *
+                        </label>
+
+                        <input
+                            type="text"
+                            id="finding-endpoint"
+                            placeholder="GET /comments"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Parameter
+                        </label>
+
+                        <input
+                            type="text"
+                            id="finding-parameter"
+                            placeholder="comment"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            OWASP
+                        </label>
+
+                        <select id="finding-owasp">
+
+                            <option value="">
+                                Select OWASP Category
+                            </option>
+
+                            <option value="A01:2021 - Broken Access Control">
+                                A01:2021 - Broken Access Control
+                            </option>
+
+                            <option value="A02:2021 - Cryptographic Failures">
+                                A02:2021 - Cryptographic Failures
+                            </option>
+
+                            <option value="A03:2021 - Injection">
+                                A03:2021 - Injection
+                            </option>
+
+                            <option value="A04:2021 - Insecure Design">
+                                A04:2021 - Insecure Design
+                            </option>
+
+                            <option value="A05:2021 - Security Misconfiguration">
+                                A05:2021 - Security Misconfiguration
+                            </option>
+
+                            <option value="A06:2021 - Vulnerable and Outdated Components">
+                                A06:2021 - Vulnerable and Outdated Components
+                            </option>
+
+                            <option value="A07:2021 - Identification and Authentication Failures">
+                                A07:2021 - Identification and Authentication Failures
+                            </option>
+
+                            <option value="A08:2021 - Software and Data Integrity Failures">
+                                A08:2021 - Software and Data Integrity Failures
+                            </option>
+
+                            <option value="A09:2021 - Security Logging and Monitoring Failures">
+                                A09:2021 - Security Logging and Monitoring Failures
+                            </option>
+
+                            <option value="A10:2021 - Server-Side Request Forgery">
+                                A10:2021 - Server-Side Request Forgery
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            CWE
+                        </label>
+
+                        <input
+                            type="text"
+                            id="finding-cwe"
+                            placeholder="CWE-79"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group full">
+
+                        <label>
+                            Description
+                        </label>
+
+                        <textarea
+                            id="finding-description"
+                        ></textarea>
+
+                    </div>
+
+
+                    <div class="form-group full">
+
+                        <label>
+                            Impact
+                        </label>
+
+                        <textarea
+                            id="finding-impact"
+                        ></textarea>
+
+                    </div>
+
+
+                    <div class="form-group full">
+
+                        <label>
+                            Root Cause
+                        </label>
+
+                        <textarea
+                            id="finding-rootcause"
+                        ></textarea>
+
+                    </div>
+
+
+                    <div class="form-group full">
+
+                        <label>
+                            Evidence
+                        </label>
+
+                        <textarea
+                            id="finding-evidence"
+                        ></textarea>
+
+                    </div>
+
+
+                    <div class="form-group full">
+
+                        <label>
+                            Remediation
+                        </label>
+
+                        <textarea
+                            id="finding-remediation"
+                        ></textarea>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Retest
+                        </label>
+
+                        <select id="finding-retest">
+
+                            <option value="Pending">
+                                Pending
+                            </option>
+
+                            <option value="PASS">
+                                PASS
+                            </option>
+
+                            <option value="FAIL">
+                                FAIL
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Retest Result
+                        </label>
+
+                        <input
+                            type="text"
+                            id="finding-retest-result"
+                        >
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="form-actions">
+
+                    <button
+                        type="button"
+                        class="cancel-button"
+                        onclick="closeAddFindingModal()"
+                    >
+                        Cancel
+                    </button>
+
+
+                    <button
+                        type="submit"
+                        class="save-button"
+                    >
+                        Save Finding
+                    </button>
+
+                </div>
+
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+
+let currentFinding = null;
+
+
+/* =========================================
+   HTML ESCAPE
+========================================= */
+
+function escapeHtml(value) {
+
+    if (
+        value === null ||
+        value === undefined
+    ) {
+        return "";
+    }
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+/* =========================================
+   LOAD FINDINGS
+========================================= */
+
+async function loadFindings() {
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/findings"
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!data.success) {
+
+            throw new Error(
+                "Unable to load findings"
+            );
+
+        }
+
+
+        const findings =
+            data.findings || [];
+
+
+        const severityCounts = {
+
+            Critical: 0,
+            High: 0,
+            Medium: 0,
+            Low: 0
+
+        };
+
+
+        findings.forEach(
+            finding => {
+
+                if (
+                    severityCounts[
+                        finding.severity
+                    ] !== undefined
+                ) {
+
+                    severityCounts[
+                        finding.severity
+                    ]++;
+
+                }
+
+            }
+        );
+
+
+        document.getElementById(
+            "total-findings"
+        ).textContent =
+            findings.length;
+
+
+        document.getElementById(
+            "critical-findings"
+        ).textContent =
+            severityCounts.Critical;
+
+
+        document.getElementById(
+            "high-findings"
+        ).textContent =
+            severityCounts.High;
+
+
+        document.getElementById(
+            "medium-findings"
+        ).textContent =
+            severityCounts.Medium;
+
+
+        document.getElementById(
+            "low-findings"
+        ).textContent =
+            severityCounts.Low;
+
+
+        document.getElementById(
+            "critical-count"
+        ).textContent =
+            severityCounts.Critical;
+
+
+        document.getElementById(
+            "high-count"
+        ).textContent =
+            severityCounts.High;
+
+
+        document.getElementById(
+            "medium-count"
+        ).textContent =
+            severityCounts.Medium;
+
+
+        document.getElementById(
+            "low-count"
+        ).textContent =
+            severityCounts.Low;
+
+
+        const total =
+            findings.length || 1;
+
+
+        document.getElementById(
+            "critical-bar"
+        ).style.width =
+            `${severityCounts.Critical / total * 100}%`;
+
+
+        document.getElementById(
+            "high-bar"
+        ).style.width =
+            `${severityCounts.High / total * 100}%`;
+
+
+        document.getElementById(
+            "medium-bar"
+        ).style.width =
+            `${severityCounts.Medium / total * 100}%`;
+
+
+        document.getElementById(
+            "low-bar"
+        ).style.width =
+            `${severityCounts.Low / total * 100}%`;
+
+
+        let openCount = 0;
+        let retestCount = 0;
+        let fixedCount = 0;
+        let reportCount = 0;
+
+
+        findings.forEach(
+            finding => {
+
+                if (
+                    finding.status === "Open"
+                ) {
+                    openCount++;
+                }
+
+                if (
+                    finding.status === "Retest"
+                ) {
+                    retestCount++;
+                }
+
+                if (
+                    finding.status === "Fixed"
+                ) {
+                    fixedCount++;
+                }
+
+                if (
+                    finding.status === "Report Ready"
+                ) {
+                    reportCount++;
+                }
+
+            }
+        );
+
+
+        document.getElementById(
+            "open-count"
+        ).textContent =
+            openCount;
+
+
+        document.getElementById(
+            "retest-count"
+        ).textContent =
+            retestCount;
+
+
+        document.getElementById(
+            "fixed-count"
+        ).textContent =
+            fixedCount;
+
+
+        document.getElementById(
+            "report-count"
+        ).textContent =
+            reportCount;
+
+
+        const tableBody =
+            document.getElementById(
+                "findings-table-body"
+            );
+
+
+        if (
+            findings.length === 0
+        ) {
+
+            tableBody.innerHTML = `
+
+                <tr>
+
+                    <td
+                        colspan="6"
+                        class="empty-message"
+                    >
+                        No security findings available.
+                    </td>
+
+                </tr>
+
+            `;
+
+            return;
+
+        }
+
+
+        tableBody.innerHTML =
+            findings
+                .map(
+                    finding => `
+
+                    <tr
+                        onclick="openFindingById('${escapeHtml(finding.id)}')"
+                        style="cursor:pointer"
+                    >
+
+                        <td>
+                            ${escapeHtml(
+                                finding.id
+                            )}
+                        </td>
+
+                        <td>
+
+                            <strong>
+                                ${escapeHtml(
+                                    finding.title
+                                )}
+                            </strong>
+
+                        </td>
+
+                        <td>
+
+                            <span class="severity-badge ${String(
+                                finding.severity ||
+                                ""
+                            ).toLowerCase()}">
+
+                                ${escapeHtml(
+                                    finding.severity
+                                )}
+
+                            </span>
+
+                        </td>
+
+                        <td>
+                            ${escapeHtml(
+                                finding.endpoint
+                            )}
+                        </td>
+
+                        <td>
+                            ${escapeHtml(
+                                finding.status
+                            )}
+                        </td>
+
+                        <td>
+                            ${escapeHtml(
+                                finding.retest
+                            )}
+                        </td>
+
+                    </tr>
+
+                `
+                )
+                .join("");
+
+    }
+
+    catch (error) {
+
+        console.error(
+            error
+        );
+
+        document.getElementById(
+            "findings-table-body"
+        ).innerHTML = `
+
+            <tr>
+
+                <td colspan="6">
+                    Unable to load findings.
+                </td>
+
+            </tr>
+
+        `;
+
+    }
+
+}
+
+
+/* =========================================
+   OPEN FINDING
+========================================= */
+
+async function openFindingById(id) {
+
+    try {
+
+        const response =
+            await fetch(
+                `/api/findings/${encodeURIComponent(id)}`
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!data.success) {
+
+            throw new Error(
+                data.error
+            );
+
+        }
+
+
+        currentFinding =
+            data.finding;
+
+
+        showDetailView();
+
+
+        document.getElementById(
+            "modal-title"
+        ).textContent =
+            currentFinding.title;
+
+
+        document.getElementById(
+            "modal-subtitle"
+        ).textContent =
+            "Security assessment finding";
+
+
+        document.getElementById(
+            "modal-finding-id"
+        ).textContent =
+            currentFinding.id || "-";
+
+
+        document.getElementById(
+            "modal-severity"
+        ).textContent =
+            currentFinding.severity || "-";
+
+
+        document.getElementById(
+            "modal-status"
+        ).textContent =
+            currentFinding.status || "-";
+
+
+        document.getElementById(
+            "modal-retest"
+        ).textContent =
+            currentFinding.retest || "-";
+
+
+        document.getElementById(
+            "modal-endpoint"
+        ).textContent =
+            currentFinding.endpoint || "-";
+
+
+        document.getElementById(
+            "modal-parameter"
+        ).textContent =
+            currentFinding.parameter || "-";
+
+
+        document.getElementById(
+            "modal-owasp"
+        ).textContent =
+            currentFinding.owasp || "-";
+
+
+        document.getElementById(
+            "modal-cwe"
+        ).textContent =
+            currentFinding.cwe || "-";
+
+
+        document.getElementById(
+            "modal-description"
+        ).textContent =
+            currentFinding.description ||
+            "Not provided.";
+
+
+        document.getElementById(
+            "modal-impact"
+        ).textContent =
+            currentFinding.impact ||
+            "Not provided.";
+
+
+        document.getElementById(
+            "modal-rootcause"
+        ).textContent =
+            currentFinding.rootCause ||
+            "Not provided.";
+
+
+        document.getElementById(
+            "modal-evidence"
+        ).textContent =
+            currentFinding.evidence ||
+            "Not provided.";
+
+
+        document.getElementById(
+            "modal-remediation"
+        ).textContent =
+            currentFinding.remediation ||
+            "Not provided.";
+
+
+        document.getElementById(
+            "modal-retest-result"
+        ).textContent =
+            currentFinding.retestResult ||
+            "Not provided.";
+
+
+        document.getElementById(
+            "finding-modal"
+        ).classList.add("show");
+
+    }
+
+    catch (error) {
+
+        alert(
+            "Unable to load finding: " +
+            error.message
+        );
+
+    }
+
+}
+
+
+/* =========================================
+   DETAIL VIEW
+========================================= */
+
+function showDetailView() {
+
+    document.getElementById(
+        "detail-view"
+    ).classList.remove("hidden");
+
+
+    document.getElementById(
+        "edit-form-container"
+    ).classList.remove("show");
+
+
+    document.getElementById(
+        "edit-button"
+    ).style.display =
+        "inline-block";
+
+
+    document.getElementById(
+        "delete-button"
+    ).style.display =
+        "inline-block";
+
+}
+
+
+/* =========================================
+   CLOSE DETAIL MODAL
+========================================= */
+
+function closeFindingModal() {
+
+    document.getElementById(
+        "finding-modal"
+    ).classList.remove("show");
+
+    currentFinding =
+        null;
+
+}
+
+
+/* =========================================
+   START EDIT
+========================================= */
+
+function startEditFinding() {
+
+    if (!currentFinding) {
+        return;
+    }
+
+
+    document.getElementById(
+        "edit-title"
+    ).value =
+        currentFinding.title || "";
+
+
+    document.getElementById(
+        "edit-severity"
+    ).value =
+        currentFinding.severity || "Medium";
+
+
+    document.getElementById(
+        "edit-status"
+    ).value =
+        currentFinding.status || "Open";
+
+
+    document.getElementById(
+        "edit-endpoint"
+    ).value =
+        currentFinding.endpoint || "";
+
+
+    document.getElementById(
+        "edit-parameter"
+    ).value =
+        currentFinding.parameter || "";
+
+
+    document.getElementById(
+        "edit-owasp"
+    ).value =
+        currentFinding.owasp || "";
+
+
+    document.getElementById(
+        "edit-cwe"
+    ).value =
+        currentFinding.cwe || "";
+
+
+    document.getElementById(
+        "edit-description"
+    ).value =
+        currentFinding.description || "";
+
+
+    document.getElementById(
+        "edit-impact"
+    ).value =
+        currentFinding.impact || "";
+
+
+    document.getElementById(
+        "edit-rootcause"
+    ).value =
+        currentFinding.rootCause || "";
+
+
+    document.getElementById(
+        "edit-evidence"
+    ).value =
+        currentFinding.evidence || "";
+
+
+    document.getElementById(
+        "edit-remediation"
+    ).value =
+        currentFinding.remediation || "";
+
+
+    document.getElementById(
+        "edit-retest"
+    ).value =
+        currentFinding.retest || "Pending";
+
+
+    document.getElementById(
+        "edit-retest-result"
+    ).value =
+        currentFinding.retestResult || "";
+
+
+    document.getElementById(
+        "detail-view"
+    ).classList.add("hidden");
+
+
+    document.getElementById(
+        "edit-form-container"
+    ).classList.add("show");
+
+
+    document.getElementById(
+        "edit-button"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "delete-button"
+    ).style.display =
+        "none";
+
+}
+
+
+/* =========================================
+   SAVE EDIT
+========================================= */
+
+document.getElementById(
+    "edit-finding-form"
+).addEventListener(
+    "submit",
+    async function(event) {
+
+        event.preventDefault();
+
+
+        if (!currentFinding) {
+            return;
+        }
+
+
+        const payload = {
+
+            title:
+                document.getElementById(
+                    "edit-title"
+                ).value.trim(),
+
+            severity:
+                document.getElementById(
+                    "edit-severity"
+                ).value,
+
+            status:
+                document.getElementById(
+                    "edit-status"
+                ).value,
+
+            endpoint:
+                document.getElementById(
+                    "edit-endpoint"
+                ).value.trim(),
+
+            parameter:
+                document.getElementById(
+                    "edit-parameter"
+                ).value.trim(),
+
+            owasp:
+                document.getElementById(
+                    "edit-owasp"
+                ).value.trim(),
+
+            cwe:
+                document.getElementById(
+                    "edit-cwe"
+                ).value.trim(),
+
+            description:
+                document.getElementById(
+                    "edit-description"
+                ).value.trim(),
+
+            impact:
+                document.getElementById(
+                    "edit-impact"
+                ).value.trim(),
+
+            rootCause:
+                document.getElementById(
+                    "edit-rootcause"
+                ).value.trim(),
+
+            evidence:
+                document.getElementById(
+                    "edit-evidence"
+                ).value.trim(),
+
+            remediation:
+                document.getElementById(
+                    "edit-remediation"
+                ).value.trim(),
+
+            retest:
+                document.getElementById(
+                    "edit-retest"
+                ).value,
+
+            retestResult:
+                document.getElementById(
+                    "edit-retest-result"
+                ).value.trim()
+
+        };
+
+
+        try {
+
+            const response =
+                await fetch(
+                    `/api/findings/${encodeURIComponent(
+                        currentFinding.id
+                    )}`,
+                    {
+
+                        method:
+                            "PUT",
+
+                        headers: {
+
+                            "Content-Type":
+                                "application/json"
+
+                        },
+
+                        body:
+                            JSON.stringify(
+                                payload
+                            )
+
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    data.error ||
+                    "Update failed"
+                );
+
+            }
+
+
+            currentFinding =
+                data.finding;
+
+
+            alert(
+                "Finding updated successfully."
+            );
+
+
+            await loadFindings();
+
+
+            await openFindingById(
+                currentFinding.id
+            );
+
+        }
+
+        catch (error) {
+
+            alert(
+                "Unable to update finding: " +
+                error.message
+            );
+
+        }
+
+    }
+);
+
+
+/* =========================================
+   DELETE FINDING
+========================================= */
+
+async function deleteCurrentFinding() {
+
+    if (!currentFinding) {
+        return;
+    }
+
+
+    const confirmed =
+        confirm(
+            `Delete ${currentFinding.id} - ${currentFinding.title}?`
+        );
+
+
+    if (!confirmed) {
+        return;
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                `/api/findings/${encodeURIComponent(
+                    currentFinding.id
+                )}`,
+                {
+                    method:
+                        "DELETE"
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                data.error ||
+                "Delete failed"
+            );
+
+        }
+
+
+        alert(
+            "Finding deleted successfully."
+        );
+
+
+        closeFindingModal();
+
+
+        await loadFindings();
+
+    }
+
+    catch (error) {
+
+        alert(
+            "Unable to delete finding: " +
+            error.message
+        );
+
+    }
+
+}
+
+
+/* =========================================
+   ADD FINDING MODAL
+========================================= */
+
+function openAddFindingModal() {
+
+    document.getElementById(
+        "add-finding-modal"
+    ).classList.add("show");
+
+}
+
+
+function closeAddFindingModal() {
+
+    document.getElementById(
+        "add-finding-modal"
+    ).classList.remove("show");
+
+}
+
+
+/* =========================================
+   ADD FINDING
+========================================= */
+
+document.getElementById(
+    "add-finding-form"
+).addEventListener(
+    "submit",
+    async function(event) {
+
+        event.preventDefault();
+
+
+        const title =
+            document.getElementById(
+                "finding-title"
+            ).value.trim();
+
+
+        const severity =
+            document.getElementById(
+                "finding-severity"
+            ).value;
+
+
+        const endpoint =
+            document.getElementById(
+                "finding-endpoint"
+            ).value.trim();
+
+
+        if (
+            !title ||
+            !severity ||
+            !endpoint
+        ) {
+
+            alert(
+                "Title, Severity and Endpoint are required."
+            );
+
+            return;
+
+        }
+
+
+        const payload = {
+
+            title:
+
+                title,
+
+            severity:
+
+                severity,
+
+            endpoint:
+
+                endpoint,
+
+            parameter:
+
+                document.getElementById(
+                    "finding-parameter"
+                ).value.trim(),
+
+            owasp:
+
+                document.getElementById(
+                    "finding-owasp"
+                ).value,
+
+            cwe:
+
+                document.getElementById(
+                    "finding-cwe"
+                ).value.trim(),
+
+            description:
+
+                document.getElementById(
+                    "finding-description"
+                ).value.trim(),
+
+            impact:
+
+                document.getElementById(
+                    "finding-impact"
+                ).value.trim(),
+
+            rootCause:
+
+                document.getElementById(
+                    "finding-rootcause"
+                ).value.trim(),
+
+            evidence:
+
+                document.getElementById(
+                    "finding-evidence"
+                ).value.trim(),
+
+            remediation:
+
+                document.getElementById(
+                    "finding-remediation"
+                ).value.trim(),
+
+            status:
+
+                document.getElementById(
+                    "finding-status"
+                ).value,
+
+            retest:
+
+                document.getElementById(
+                    "finding-retest"
+                ).value,
+
+            retestResult:
+
+                document.getElementById(
+                    "finding-retest-result"
+                ).value.trim()
+
+        };
+
+
+        try {
+
+            const response =
+                await fetch(
+                    "/api/findings",
+                    {
+
+                        method:
+                            "POST",
+
+                        headers: {
+
+                            "Content-Type":
+                                "application/json"
+
+                        },
+
+                        body:
+                            JSON.stringify(
+                                payload
+                            )
+
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    data.error ||
+                    "Unable to save finding"
+                );
+
+            }
+
+
+            alert(
+                `Finding ${data.finding.id} added successfully.`
+            );
+
+
+            document.getElementById(
+                "add-finding-form"
+            ).reset();
+
+
+            closeAddFindingModal();
+
+
+            await loadFindings();
+
+        }
+
+        catch (error) {
+
+            alert(
+                "Unable to save finding: " +
+                error.message
+            );
+
+        }
+
+    }
+);
+
+
+/* =========================================
+   BACKDROP CLICK
+========================================= */
+
+document.getElementById(
+    "finding-modal"
+).addEventListener(
+    "click",
+    function(event) {
+
+        if (
+            event.target === this
+        ) {
+
+            closeFindingModal();
+
+        }
+
+    }
+);
+
+
+document.getElementById(
+    "add-finding-modal"
+).addEventListener(
+    "click",
+    function(event) {
+
+        if (
+            event.target === this
+        ) {
+
+            closeAddFindingModal();
+
+        }
+
+    }
+);
+
+
+/* =========================================
+   ESC KEY
+========================================= */
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (
+            event.key === "Escape"
+        ) {
+
+            closeFindingModal();
+
+            closeAddFindingModal();
+
+        }
+
+    }
+);
+
+
+/* =========================================
+   INITIAL LOAD
+========================================= */
+
+loadFindings();
+
+</script>
+
 
 </body>
+
 </html>
-EOF

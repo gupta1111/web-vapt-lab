@@ -1,0 +1,53 @@
+[
+  {
+    "id": "F-06",
+    "title": "Reflected Cross-Site Scripting (XSS)",
+    "endpoint": "GET /comments",
+    "parameter": "comment",
+    "severity": "High",
+    "status": "Fixed",
+    "retest": "PASS",
+    "owasp": "A03:2021 - Injection",
+    "cwe": "CWE-79",
+    "description": "The application reflected user-controlled input directly into the HTTP response without output encoding.",
+    "impact": "An attacker could potentially execute JavaScript in a victim's browser when the victim visits a crafted URL.",
+    "rootCause": "User-controlled input was rendered without appropriate output encoding.",
+    "evidence": "The payload <script>alert(document.domain)</script> was reflected directly in the HTTP response.",
+    "remediation": "Apply context-appropriate output encoding before rendering user-controlled input. Implement a restrictive Content Security Policy as defense in depth.",
+    "retestResult": "After remediation, the payload was HTML-encoded and JavaScript execution did not occur."
+  },
+  {
+    "id": "F-02",
+    "title": "Missing Security Headers",
+    "endpoint": "GET /",
+    "parameter": "N/A",
+    "severity": "Medium",
+    "status": "Open",
+    "retest": "Pending",
+    "owasp": "A05:2021 - Security Misconfiguration",
+    "cwe": "CWE-693",
+    "description": "Recommended security headers are missing from the HTTP response.",
+    "impact": "Missing security headers can increase exposure to browser-based attacks.",
+    "rootCause": "Security headers were not configured.",
+    "evidence": "HTTP response did not contain several recommended security headers.",
+    "remediation": "Configure appropriate security headers.",
+    "retestResult": ""
+  },
+  {
+    "id": "F-03",
+    "title": "Missing Content Security Policy",
+    "endpoint": "GET",
+    "parameter": "N/A",
+    "severity": "Medium",
+    "status": "Open",
+    "retest": "Pending",
+    "owasp": "A05:2021 - Security Misconfiguration",
+    "cwe": "CWE-693",
+    "description": "Content Security Policy header was not observed in the HTTP response.",
+    "impact": "Absence of a restrictive CSP may increase the impact of certain client-side injection",
+    "rootCause": "Security response headers were not fully configured.",
+    "evidence": "The HTTP response did not contain a Content-Security-Policy header.",
+    "remediation": "Implement an appropriate restrictive Content-Security-Policy header.",
+    "retestResult": ""
+  }
+]
