@@ -1,0 +1,195 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #0f172a;
+    color: #e5e7eb;
+}
+
+header {
+    padding: 25px 5%;
+    background: #111827;
+    border-bottom: 1px solid #263244;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 28px;
+}
+
+header p {
+    color: #94a3b8;
+}
+
+.status {
+    color: #22c55e;
+    font-weight: bold;
+}
+
+main {
+    width: 90%;
+    max-width: 1300px;
+    margin: 30px auto;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 15px;
+}
+
+.card,
+.panel {
+    background: #111827;
+    border: 1px solid #263244;
+    border-radius: 12px;
+    padding: 22px;
+}
+
+.card span {
+    color: #94a3b8;
+}
+
+.card strong {
+    display: block;
+    font-size: 32px;
+    margin-top: 10px;
+}
+
+.critical strong {
+    color: #ef4444;
+}
+
+.high strong {
+    color: #f97316;
+}
+
+.medium strong {
+    color: #eab308;
+}
+
+.low strong {
+    color: #22c55e;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin: 20px 0;
+}
+
+.panel {
+    margin-bottom: 20px;
+}
+
+.panel h2 {
+    margin-top: 0;
+}
+
+.bar {
+    margin: 18px 0;
+}
+
+.bar label {
+    display: block;
+    margin-bottom: 6px;
+    color: #cbd5e1;
+}
+
+.bar div {
+    height: 10px;
+    background: #1e293b;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.bar span {
+    display: block;
+    height: 100%;
+    background: #3b82f6;
+}
+
+.status-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 0;
+    border-bottom: 1px solid #263244;
+}
+
+.status-row strong {
+    font-size: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    text-align: left;
+    padding: 15px;
+    border-bottom: 1px solid #263244;
+}
+
+th {
+    color: #94a3b8;
+}
+
+.badge {
+    padding: 5px 9px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.high-bg {
+    background: #7c2d12;
+}
+
+.critical-bg {
+    background: #7f1d1d;
+}
+
+.owasp-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.owasp-grid div {
+    background: #1e293b;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.owasp-grid b {
+    color: #22c55e;
+    float: right;
+}
+
+footer {
+    text-align: center;
+    padding: 30px;
+    color: #64748b;
+}
+
+@media (max-width: 800px) {
+
+    .cards,
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+    .owasp-grid {
+        grid-template-columns: 1fr;
+    }
+
+}

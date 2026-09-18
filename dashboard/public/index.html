@@ -1,0 +1,208 @@
+cat > index.html <<'EOF'
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI VAPT Security Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+    <div>
+        <h1>AI VAPT Security Dashboard</h1>
+        <p>Web Application Security Assessment Center</p>
+    </div>
+
+    <span class="status">● LAB ONLINE</span>
+</header>
+
+<main>
+
+    <section class="cards">
+
+        <div class="card">
+            <span>Total Findings</span>
+            <strong>12</strong>
+        </div>
+
+        <div class="card critical">
+            <span>Critical</span>
+            <strong>1</strong>
+        </div>
+
+        <div class="card high">
+            <span>High</span>
+            <strong>4</strong>
+        </div>
+
+        <div class="card medium">
+            <span>Medium</span>
+            <strong>5</strong>
+        </div>
+
+        <div class="card low">
+            <span>Low</span>
+            <strong>2</strong>
+        </div>
+
+    </section>
+
+
+    <section class="grid">
+
+        <div class="panel">
+            <h2>Vulnerability Overview</h2>
+
+            <div class="bar">
+                <label>Critical</label>
+                <div><span style="width:15%"></span></div>
+            </div>
+
+            <div class="bar">
+                <label>High</label>
+                <div><span style="width:45%"></span></div>
+            </div>
+
+            <div class="bar">
+                <label>Medium</label>
+                <div><span style="width:65%"></span></div>
+            </div>
+
+            <div class="bar">
+                <label>Low</label>
+                <div><span style="width:30%"></span></div>
+            </div>
+        </div>
+
+
+        <div class="panel">
+            <h2>Assessment Status</h2>
+
+            <div class="status-row">
+                <span>Open Findings</span>
+                <strong>7</strong>
+            </div>
+
+            <div class="status-row">
+                <span>Retest Pending</span>
+                <strong>2</strong>
+            </div>
+
+            <div class="status-row">
+                <span>Remediated</span>
+                <strong>3</strong>
+            </div>
+
+            <div class="status-row">
+                <span>Reports</span>
+                <strong>2</strong>
+            </div>
+        </div>
+
+    </section>
+
+
+    <section class="panel">
+
+        <h2>Recent Security Findings</h2>
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Finding</th>
+                    <th>Severity</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <tr>
+                    <td>VAPT-001</td>
+                    <td>Stored XSS</td>
+                    <td>
+                        <span class="badge high-bg">HIGH</span>
+                    </td>
+                    <td>Open</td>
+                </tr>
+
+                <tr>
+                    <td>VAPT-002</td>
+                    <td>IDOR / Broken Access Control</td>
+                    <td>
+                        <span class="badge high-bg">HIGH</span>
+                    </td>
+                    <td>Retest</td>
+                </tr>
+
+                <tr>
+                    <td>VAPT-003</td>
+                    <td>SQL Injection</td>
+                    <td>
+                        <span class="badge critical-bg">CRITICAL</span>
+                    </td>
+                    <td>Open</td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </section>
+
+
+    <section class="panel">
+
+        <h2>OWASP Security Coverage</h2>
+
+        <div class="owasp-grid">
+
+            <div>
+                A01 Broken Access Control
+                <b>✓</b>
+            </div>
+
+            <div>
+                A02 Cryptographic Failures
+                <b>✓</b>
+            </div>
+
+            <div>
+                A03 Injection
+                <b>✓</b>
+            </div>
+
+            <div>
+                A05 Security Misconfiguration
+                <b>✓</b>
+            </div>
+
+            <div>
+                A07 Authentication Failures
+                <b>✓</b>
+            </div>
+
+            <div>
+                A10 SSRF
+                <b>✓</b>
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<footer>
+    AI-Assisted Web VAPT Lab • Authorized Security Testing Only
+</footer>
+
+</body>
+</html>
+EOF
