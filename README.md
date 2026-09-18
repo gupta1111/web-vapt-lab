@@ -975,3 +975,8 @@ LinkedIn:
 ```text
 https://www.linkedin.com/in/bhola-gupta-729668150/
 ```
+## Screenshots
+
+### Juice Shop — Application Homepage
+
+![Juice Shop Homepage](screenshots/01-juice-shop-homepage.png)
