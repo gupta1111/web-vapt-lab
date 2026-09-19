@@ -988,3 +988,7 @@ https://www.linkedin.com/in/bhola-gupta-729668150/
 ### XSS Testing — Retest
 
 ![XSS Testing](screenshots/03-xss-testing.png)
+ 
+## 📸 Dashboard Preview
+
+![AI-Assisted Web VAPT Dashboard](screenshots/dashboard-preview.png)
